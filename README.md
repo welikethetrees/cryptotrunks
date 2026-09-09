@@ -22,9 +22,37 @@ any of them breaks something we cannot fix by deploying.
 |---|---|
 | `poap/01-spring.json`<br>`poap/02-summer.json`<br>`poap/03-fall.json`<br>`poap/04-winter.json` | The CryptoTrunks POAP contract's on-chain `tokenURI` |
 | `poap/01-spring.gif`<br>`poap/02-summer.gif`<br>`poap/03-fall.gif`<br>`poap/04-winter.gif` | The `image` field inside each of the JSON files above |
+| `poap/trunks.json`<br>`poap/trunks.png` | ⚠️ **Unestablished — treat as load-bearing.** See below |
 | `images/trunk_missing.png` | V1 trunk metadata, as the placeholder image |
 | `individual-trunk-page.html` | The `external_url` stamped on V1 clone trunks |
 | `CNAME` | Binds this Pages site to `cryptotrunks.co`. Deleting it drops the domain |
+
+### ⚠️ `poap/trunks.json` and `poap/trunks.png` — live, and nobody knows what points at them
+
+A fifth POAP sits in `poap/` and is **not** part of the four-season set:
+
+```json
+{ "name": "Two Years in Bloom // CryptoTrunks",
+  "attributes": [ {"trait_type": "Anniversary", "value": "Two Years"},
+                  {"trait_type": "Artist",      "value": "Ruslan Vyaltsev"} ],
+  "image": "https://cryptotrunks.co/poap/trunks.png" }
+```
+
+Both files return **200** today. What is not established is **what consumes them**:
+
+- The 11,605-token POAP contract `0x1355…7309` does **not**. Its `tokenURI` was probed
+  across the id range (1, 5000, 10000, 11000, 11600, 11605) and every one resolves to
+  one of `poap/0{1..4}-*.json`. Never `trunks.json`.
+- `machine-garden` does **not** read them either. It seeds the anniversary medallion
+  art into its own bucket from `src/assets/integration_seed`, so it does not hot-link
+  this host for it.
+
+So this is either a separate anniversary token's on-chain metadata whose contract we
+have not identified, or an orphan left from the drop.
+
+**Do not delete them to find out.** Keeping two unreferenced files costs nothing;
+deleting live on-chain metadata is permanent and cannot be fixed by deploying. If
+anyone establishes what the source is, replace this section with the answer.
 
 Verified against the contract on Ethereum mainnet:
 
